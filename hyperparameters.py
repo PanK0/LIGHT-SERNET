@@ -28,7 +28,7 @@ EPOCHS = 300
 
 BATCH_SIZE = 32
 
-K_FOLD = 10
+K_FOLD = 3
 
 
 # Regularizer Hyperparameter
