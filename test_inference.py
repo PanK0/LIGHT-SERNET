@@ -32,6 +32,8 @@ ap.add_argument("-f", "--file_name",
                 type=str,
                 help="name of the file to predict")
 
+args = vars(ap.parse_args())
+
 tflite_file = args["tflite_file"]
 file_name = []
 file_name.append(args["file_name"])
