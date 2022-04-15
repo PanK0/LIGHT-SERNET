@@ -121,7 +121,13 @@ def preprocess_dataset(files, labels_list, input_type="mfcc"):
     return output_ds
 
 
+# To make inference it is needed to preprocess the input
+def preprocess_input(files, input_type="mfcc"):
+    files_ds = tf.data.Dataset.from_tensor_slices(files)
+    output_ds = files_ds.map(get_waveform_and_label, num_parallel_calls=AUTOTUNE)
+    processed_input = output_ds.batch(hyperparameters.BATCH_SIZE).prefetch(AUTOTUNE)
 
+    return processed_input
 
 
 def split_dataset(dataset_name, audio_type="all"):
