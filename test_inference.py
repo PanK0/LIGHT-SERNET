@@ -1,4 +1,4 @@
-import os
+mport os
 import datetime
 import time
 import argparse
@@ -20,30 +20,76 @@ import models
 import warnings
 warnings.filterwarnings("ignore")
 
-# build the argument parser to get the inputs from command line
-ap = argparse.ArgumentParser()
-ap.add_argument("-tf", "--tflite_file",
-                required=True,
-                type=str,
-                help="model, .tflite file")
 
-ap.add_argument("-f", "--file_name",
+#os.environ["CUDA_VISIBLE_DEVICES"] = "-1"
+
+tf.random.set_seed(hyperparameters.SEED)
+np.random.seed(hyperparameters.SEED)
+
+# construct the argument parser and parse the arguments
+ap = argparse.ArgumentParser()
+ap.add_argument("-dn", "--dataset_name",
                 required=True,
                 type=str,
-                help="name of the file to predict")
+                help="dataset name")
+
+ap.add_argument("-id", "--input_durations",
+                required=True,
+                type=float,
+                help="input durations(sec)")
+
+ap.add_argument("-at", "--audio_type",
+                default="all",
+                type=str,
+                help="auido type to filter dataset(IEMOCAP)")
+
+ap.add_argument("-ln", "--loss_name",
+                default="cross_entropy",
+                type=str,
+                help="cost function name for training")
+
+ap.add_argument("-v", "--verbose",
+                default=1,
+                type=int,
+                help="verbose for training bar")
+
+ap.add_argument("-it", "--input_type",
+                default="mfcc",
+                type=str,
+                help="type of input(mfcc, spectrogram, mel_spectrogram)")
 
 args = vars(ap.parse_args())
 
-tflite_file = args["tflite_file"]
-file_name = []
-file_name.append(args["file_name"])
-file_name = tf.concat(file_name, axis=0).numpy()
-input_type = "mfcc"
 
-# input preprocessing
-processed_audio = preprocess_input(file_name, input_type)
+dataset_name = args["dataset_name"]  # Use EMO-DB_3.0s_Inference_Tests as dataset name
+dataset_name = "EMO-DB_3.0s_Inference_Tests"
+input_durations = args["input_durations"]
+audio_type = args["audio_type"]
+loss_name = args["loss_name"]
+verbose = args["verbose"]
+input_type = args["input_type"]
 
-# run the prediction
-predictions = run_tflite_model(tflite_file, processed_audio)
+'''
+NO NEED TO SEGMENT DATASET
+'''
+print ("Dataset is already segmented\n")
 
-print(predictions)
+threshold = 0
+
+Result = []
+Reports = []
+Predicted_targets = np.array([])
+Actual_targets = np.array([])
+
+print ("Preparing for dataset spliting")
+
+Filenames, Splited_Index, Labels_list = split_dataset(dataset_name, audio_type=audio_type)
+
+print ("\n***** FILENAMES *****")
+print (Filenames)
+
+print ("\n***** SPLITED INDEX *****")
+print (Splited_Index)
+
+print ("\n***** LABELS LIST *****")
+print (Labels_list)

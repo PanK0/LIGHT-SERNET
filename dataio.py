@@ -120,15 +120,46 @@ def preprocess_dataset(files, labels_list, input_type="mfcc"):
 
     return output_ds
 
+"""
+START Functions for inference
+"""
+
+# get the waveform of an audio file
+def get_waveform(file_path):
+    audio_binary = tf.io.read_file(file_path)
+    waveform = decode_audio(audio_binary)
+    return waveform
+
+# aux function to preprocess input
+def get_input_id(audio, input_type="mfcc"):
+
+    if input_type == "spectrogram":
+        spectrogram = get_spectrogram(audio)
+        spectrogram = tf.expand_dims(spectrogram, -1)
+        return spectrogram
+    elif input_type == "mel_spectrogram":
+        spectrogram = get_spectrogram(audio)
+        mel_spectrogram = get_mel_spectrogram(spectrogram)
+        mel_spectrogram = tf.expand_dims(mel_spectrogram, -1)
+        return mel_spectrogram
+    elif input_type == "mfcc":
+        spectrogram = get_spectrogram(audio)
+        mel_spectrogram = get_mel_spectrogram(spectrogram)
+        mfcc = get_mfcc(mel_spectrogram)
+        mfcc = tf.expand_dims(mfcc, -1)
+        return mfcc
+    else:
+        raise ValueError('input_type not Valid!')
 
 # To make inference it is needed to preprocess the input
-def preprocess_input(files, input_type="mfcc"):
-    files_ds = tf.data.Dataset.from_tensor_slices(files)
-    output_ds = files_ds.map(get_waveform_and_label, num_parallel_calls=AUTOTUNE)
-    processed_input = output_ds.batch(hyperparameters.BATCH_SIZE).prefetch(AUTOTUNE)
+def preprocess_input(file, input_type="mfcc"):
+    output = get_waveform(file)
+    processed_file = get_input_id(output, input_type)
+    return processed_file
 
-    return processed_input
-
+"""
+END Functions for inference
+"""
 
 def split_dataset(dataset_name, audio_type="all"):
     
