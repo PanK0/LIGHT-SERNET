@@ -62,7 +62,7 @@ args = vars(ap.parse_args())
 
 
 dataset_name = args["dataset_name"]  # Use EMO-DB_3.0s_Inference_Tests as dataset name
-dataset_name = "EMO-DB_3.0s_Inference_Tests"
+dataset_name = "inference_tests/EMO-DB_3.0s_Inference_Tests"
 input_durations = args["input_durations"]
 audio_type = args["audio_type"]
 loss_name = args["loss_name"]
