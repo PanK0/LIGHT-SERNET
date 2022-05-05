@@ -125,13 +125,28 @@ START Functions for inference
 """
 
 # Get the preprocessed input as result
-def preprocess_input(files, labels_list, input_type="mfcc", maker=False):
-    preprocessed_input = preprocess_dataset(files, labels_list, input_type)
-    preprocessed_input = preprocessed_input.batch(hyperparameters.BATCH_SIZE).prefetch(AUTOTUNE)
-    if maker: 
-        list(preprocessed_input.as_numpy_iterator()) 
+def preprocess_input(dataset_name, filenames, splited_index, labels_list, input_type="mfcc", maker=False):
+    
+    cache_directory = f"{hyperparameters.BASE_DIRECTORY}/Cache/{dataset_name}"
+    os.system(f"rm -rf {cache_directory}")
 
-    return preprocessed_input 
+    test_cache_directory = os.path.join(cache_directory, "test")
+    os.makedirs(test_cache_directory, exist_ok=True)
+
+    test_index = splited_index[index_selection_fold]
+
+    test_files = tf.gather(filenames, test_index)
+
+    test_dataset = preprocess_dataset(test_files, labels_list, input_type)
+    test_dataset = test_dataset.cache(test_cache_directory+ "/file")
+
+    test_dataset = test_dataset.batch(hyperparameters.BATCH_SIZE).prefetch(AUTOTUNE)
+
+    if maker: 
+        list(test_dataset.as_numpy_iterator()) 
+
+    return test_dataset
+    
 
 
 """
