@@ -133,7 +133,7 @@ def preprocess_input(dataset_name, filenames, splited_index, labels_list, input_
     test_cache_directory = os.path.join(cache_directory, "test")
     os.makedirs(test_cache_directory, exist_ok=True)
 
-    test_index = splited_index[index_selection_fold]
+    test_index = splited_index
 
     test_files = tf.gather(filenames, test_index)
 
