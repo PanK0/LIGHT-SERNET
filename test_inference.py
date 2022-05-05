@@ -94,7 +94,7 @@ print ("\n***** LABELS LIST *****")
 print (Labels_list)
 
 print ("\n***** INPUT PREPROCESSING *****")
-preprocessed_input = preprocess_input(Filenames, Labels_list, input_type="mfcc", maker="True")
+preprocessed_input = preprocess_input(Filenames, Labels_list, input_type="mfcc", maker=True)
 
 print ("\n***** CREATING BuffX and BuffY *****")
 BuffX = []

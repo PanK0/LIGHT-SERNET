@@ -125,7 +125,7 @@ START Functions for inference
 """
 
 # Get the preprocessed input as result
-def preprocess_input(files, labels_list, input_type="mfcc", maker="False"):
+def preprocess_input(files, labels_list, input_type="mfcc", maker=False):
     preprocessed_input = preprocess_dataset(files, labels_list, input_type)
     preprocessed_input = preprocessed_input.batch(hyperparameters.BATCH_SIZE).prefetch(AUTOTUNE)
     if maker: 
