@@ -92,3 +92,8 @@ print (Splited_Index)
 
 print ("\n***** LABELS LIST *****")
 print (Labels_list)
+
+print ("\n***** INPUT PREPROCESSING *****")
+preprocessed_input = preprocess_dataset(Filenames, Labels_list, input_type="mfcc")
+
+print ("DONE")
