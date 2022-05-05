@@ -128,8 +128,6 @@ START Functions for inference
 def preprocess_input(files, labels_list, input_type="mfcc"):
     preprocessed_input = preprocess_dataset(files, labels_list, input_type)
     preprocessed_input = preprocessed_input.batch(hyperparameters.BATCH_SIZE).prefetch(AUTOTUNE)
-    if maker: 
-        list(preprocessed_input.as_numpy_iterator())
 
     return preprocessed_input 
 
