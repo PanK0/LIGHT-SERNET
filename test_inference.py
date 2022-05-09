@@ -95,6 +95,8 @@ print (Labels_list)
 
 print ("\n***** INPUT PREPROCESSING *****")
 preprocessed_input = preprocess_input(dataset_name, Filenames, Splited_Index, Labels_list, input_type="mfcc", maker=True)
+print (preprocessed_input)
+
 
 print ("\n***** CREATING BuffX and BuffY *****")
 BuffX = []
@@ -104,6 +106,12 @@ for buff in preprocessed_input:
     BuffY.append(buff[1])
 BuffX = tf.concat(BuffX, axis=0).numpy()
 BuffY = tf.concat(BuffY, axis=0).numpy()
+
+print ("\n***** BuffX *****")
+print (BuffX)
+print ("\n***** BuffY *****")
+print (BuffY)
+
 
 print ("\n***** LOAD AND RUN THE MODEL *****")
 model_path = f"inference_tests/EMO-DB_3.0s_Segmented_cross_entropy_float32.tflite"

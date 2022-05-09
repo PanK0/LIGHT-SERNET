@@ -134,6 +134,8 @@ def preprocess_input(dataset_name, filenames, splited_index, labels_list, input_
     os.makedirs(test_cache_directory, exist_ok=True)
 
     test_index = splited_index[0]
+    print ("\n***** test_index (inside preprocess_input() in dataio.py) *****")
+    print (test_index)
 
     test_files = tf.gather(filenames, test_index)
 
