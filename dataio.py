@@ -199,6 +199,14 @@ def make_dataset_with_cache(dataset_name, filenames, splited_index, labels_list,
 
 
     test_index = splited_index[index_selection_fold]
+    print ("\n\n")
+    print ("************ splited_index")
+    print (splited_index)
+    print ("\n************ index_selection_fold")
+    print (index_selection_fold)
+    print ("************ test_index")
+    print (test_index) 
+
 
     train_index = np.setdiff1d(np.arange(len(filenames)), test_index)
 
