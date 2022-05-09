@@ -37,7 +37,7 @@ DROPOUT = 0.3
 
 
 # Base Directory for Datasets
-BASE_DIRECTORY = "inference_tests"
+BASE_DIRECTORY = "data"
 
 
 # Optimizer Config
