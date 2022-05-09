@@ -100,17 +100,17 @@ print (preprocessed_input)
 
 print ("\n***** CREATING BuffX and BuffY *****")
 BuffX = []
-BuffY = []
+#BuffY = []
 for buff in preprocessed_input:
     BuffX.append(buff[0])
-    BuffY.append(buff[1])
+    #BuffY.append(buff[1])
 BuffX = tf.concat(BuffX, axis=0).numpy()
-BuffY = tf.concat(BuffY, axis=0).numpy()
+#BuffY = tf.concat(BuffY, axis=0).numpy()
 
 print ("\n***** BuffX *****")
 print (BuffX)
-print ("\n***** BuffY *****")
-print (BuffY)
+#print ("\n***** BuffY *****")
+#print (BuffY)
 
 
 print ("\n***** LOAD AND RUN THE MODEL *****")
