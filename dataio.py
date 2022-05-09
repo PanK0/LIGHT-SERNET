@@ -133,7 +133,7 @@ def preprocess_input(dataset_name, filenames, splited_index, labels_list, input_
     test_cache_directory = os.path.join(cache_directory, "test")
     os.makedirs(test_cache_directory, exist_ok=True)
 
-    test_index = splited_index
+    test_index = splited_index[0]
 
     test_files = tf.gather(filenames, test_index)
 
@@ -199,15 +199,6 @@ def make_dataset_with_cache(dataset_name, filenames, splited_index, labels_list,
 
 
     test_index = splited_index[index_selection_fold]
-    print ("\n\n")
-    print ("************ splited_index")
-    print (splited_index)
-    print ("\n************ index_selection_fold")
-    print (index_selection_fold)
-    print ("************ test_index")
-    print (test_index) 
-
-
     train_index = np.setdiff1d(np.arange(len(filenames)), test_index)
 
 
