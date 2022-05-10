@@ -114,7 +114,7 @@ print (BuffX)
 
 
 print ("\n***** LOAD AND RUN THE MODEL *****")
-model_path = f"inference_tests/EMO-DB_3.0s_Segmented_cross_entropy_int8.tflite"
+model_path = f"inference_tests/EMO-DB_3.0s_Segmented_cross_entropy_float32.tflite"
 predictions = run_tflite_model(model_path, BuffX)
 print(predictions)
 
