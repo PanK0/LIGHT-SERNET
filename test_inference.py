@@ -94,12 +94,13 @@ print ("\n***** LABELS LIST *****")
 print (Labels_list)
 
 print ("\n***** INPUT PREPROCESSING *****")
+
 '''
 preprocessed_input = preprocess_input(dataset_name, Filenames, Splited_Index, Labels_list, input_type="mfcc", maker=True)
 print (preprocessed_input)
 '''
 index_selection_fold = 0
-_ , preprocessed_input = make_dataset_with_cache(dataset_name, Filenames, Splited_Index, Labels_list, index_selection_fold, maker=True)
+_ , preprocessed_input = make_dataset_with_cache(dataset_name=dataset_name, filenames=Filenames, splited_index=Splited_Index, lapels_list=Labels_list, index_selection_fold=index_selection_fold, input_type=input_type, maker=True)
 
 
 print ("\n***** CREATING BuffX and BuffY *****")
