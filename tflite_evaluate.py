@@ -20,18 +20,18 @@ def run_tflite_model(tflite_file, test_audios):
 	for i, test_audio in enumerate(test_audios):
 
 	    # Check if the input type is quantized, then rescale input data to uint8
-	    if input_details['dtype'] == np.uint8:
-	        input_scale, input_zero_point = input_details["quantization"]
-	        test_audio = test_audio / input_scale + input_zero_point
+		if input_details['dtype'] == np.uint8:
+			input_scale, input_zero_point = input_details["quantization"]
+			test_audio = test_audio / input_scale + input_zero_point
 
-	    test_audio = np.expand_dims(test_audio, axis=0).astype(input_details["dtype"])
+		test_audio = np.expand_dims(test_audio, axis=0).astype(input_details["dtype"])
 		print("************** AAAAAAAA")
 		print(input_details['index'])
-	    interpreter.set_tensor(input_details["index"], test_audio)
-	    interpreter.invoke()
-	    output = interpreter.get_tensor(output_details["index"])[0]
-
-	    predictions[i] = output.argmax()
+		interpreter.set_tensor(input_details["index"], test_audio)
+		interpreter.invoke()
+		output = interpreter.get_tensor(output_details["index"])[0]
+		
+		predictions[i] = output.argmax()
 
 	return predictions
 
