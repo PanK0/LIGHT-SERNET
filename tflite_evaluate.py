@@ -26,7 +26,7 @@ def run_tflite_model(tflite_file, test_audios):
 
 		test_audio = np.expand_dims(test_audio, axis=0).astype(input_details["dtype"])
 		print("************** AAAAAAAA")
-		print(input_details['index'])
+		print(input_details)
 		interpreter.set_tensor(input_details["index"], test_audio)
 		interpreter.invoke()
 		output = interpreter.get_tensor(output_details["index"])[0]
