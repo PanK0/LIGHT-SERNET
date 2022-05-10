@@ -133,7 +133,7 @@ def preprocess_input(dataset_name, filenames, splited_index, labels_list, input_
     test_cache_directory = os.path.join(cache_directory, "test")
     os.makedirs(test_cache_directory, exist_ok=True)
 
-    test_index = splited_index[1]
+    test_index = splited_index[0]
     print ("\n***** test_index (inside preprocess_input() in dataio.py) *****")
     print (test_index)
 
