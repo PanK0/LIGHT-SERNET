@@ -100,7 +100,7 @@ preprocessed_input = preprocess_input(dataset_name, Filenames, Splited_Index, La
 print (preprocessed_input)
 '''
 index_selection_fold = 0
-_ , preprocessed_input = make_dataset_with_cache(dataset_name=dataset_name, filenames=Filenames, splited_index=Splited_Index, lapels_list=Labels_list, index_selection_fold=index_selection_fold, input_type=input_type, maker=True)
+_ , preprocessed_input = make_dataset_with_cache(dataset_name=dataset_name, filenames=Filenames, splited_index=Splited_Index, labels_list=Labels_list, index_selection_fold=index_selection_fold, input_type=input_type, maker=True)
 
 
 print ("\n***** CREATING BuffX and BuffY *****")
