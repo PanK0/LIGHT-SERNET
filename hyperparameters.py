@@ -28,7 +28,7 @@ EPOCHS = 300
 
 BATCH_SIZE = 32
 
-K_FOLD = 10
+K_FOLD = 1
 
 
 # Regularizer Hyperparameter
@@ -37,7 +37,7 @@ DROPOUT = 0.3
 
 
 # Base Directory for Datasets
-BASE_DIRECTORY = "inference_tests"
+BASE_DIRECTORY = "data"#"inference_tests"
 
 
 # Optimizer Config
