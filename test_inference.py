@@ -114,14 +114,13 @@ BuffY = tf.concat(BuffY, axis=0).numpy()
 
 print ("\n***** BuffX *****")
 print (BuffX)
-#print ("\n***** BuffY *****")
-#print (BuffY)
+print ("\n***** BuffY *****")
+print (BuffY)
 
 
 print ("\n***** LOAD AND RUN THE MODEL *****")
 model_path = f"inference_tests/EMO-DB_3.0s_Segmented_cross_entropy_float32.tflite"
-#predictions = run_tflite_model(model_path, BuffX)
-evaluate_model(model_path, "float32", BuffX, BuffY)
+predictions = run_tflite_model(model_path, BuffX)
 print(predictions)
 
 print ("\n DONE")
