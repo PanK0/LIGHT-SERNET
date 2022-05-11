@@ -108,9 +108,9 @@ BuffX = []
 #BuffY = []
 for buff in preprocessed_input:
     BuffX.append(buff[0])
-    #BuffY.append(buff[1])
+    BuffY.append(buff[1])
 BuffX = tf.concat(BuffX, axis=0).numpy()
-#BuffY = tf.concat(BuffY, axis=0).numpy()
+BuffY = tf.concat(BuffY, axis=0).numpy()
 
 print ("\n***** BuffX *****")
 print (BuffX)
@@ -120,7 +120,8 @@ print (BuffX)
 
 print ("\n***** LOAD AND RUN THE MODEL *****")
 model_path = f"inference_tests/EMO-DB_3.0s_Segmented_cross_entropy_float32.tflite"
-predictions = run_tflite_model(model_path, BuffX)
+#predictions = run_tflite_model(model_path, BuffX)
+evaluate_model(model_path, "float32", BuffX, BuffY)
 print(predictions)
 
 print ("\n DONE")
