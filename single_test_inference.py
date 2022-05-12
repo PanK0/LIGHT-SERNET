@@ -79,20 +79,18 @@ print ("\n***** OBTAINING FULL FILE PATH *****")
 filename = f"inference_tests/{file_name}"
 print (filename)
 
+print ("\n***** SEGMENTING DATA *****")
+segmented_file = segment_file(filename, segment_length=3, segment_mode=1)
+print (segmented_file)
+
 print ("\n***** INPUT PREPROCESSING *****")
-preprocessed_input = preprocess_input(filename, input_type="mfcc")
+preprocessed_input = preprocess_input(segmented_file, input_type="mfcc")
 print (preprocessed_input)
 
-'''
-print ("\n***** CREATING BUFFX *****")
-BuffX = []
-BuffX.append(preprocessed_input)
-BuffX = tf.concat(BuffX, axis=0).numpy()
-print (BuffX)
-'''
 
 print ("\n***** LOAD AND RUN THE MODEL *****")
 model_path = f"inference_tests/EMO-DB_3.0s_Segmented_cross_entropy_float32.tflite"
 predictions = run_model(model_path, preprocessed_input)
-print (predictions)
 
+print ("\n****** RESULT ******")
+print (predictions)

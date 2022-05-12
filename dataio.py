@@ -1,3 +1,4 @@
+from email import utils
 import os
 
 import tensorflow as tf
@@ -5,6 +6,8 @@ import numpy as np
 
 import hyperparameters
 from filter_dataset import *
+from utils.segment.utils import *
+
 
 
 
@@ -124,6 +127,20 @@ def preprocess_dataset(files, labels_list, input_type="mfcc"):
 START Functions for inference
 """
 
+def segment_file(filename, segment_length=3, segment_mode=1):
+    raw_data, fs = read_wave(filename)
+    trimed_data = trim_wave(raw_data, segment_length=int(segment_length*fs), segment_mode=segment_mode)
+
+    for counter in range(0, len(trimed_data), int(segment_length*fs)):
+        segment_data = trimed_data[counter:counter+int(segment_length*fs)]
+        segment_data = normalize(segment_data, segment_length=int(segment_length*fs))
+
+        splited_filename = filename.split("/")
+        splited_filename[-1] = f"segmented_{splited_filename[-1]}"
+        filename = "/".join(splited_filename)
+        write_wave(segment_data, filename, fs)
+    return filename
+
 def get_input_id(audio, input_type="mfcc") :
     if input_type == "spectrogram":
         spectrogram = get_spectrogram(audio)
@@ -164,10 +181,14 @@ def run_model(tflite_file, test_audio) :
     if input_details['dtype'] == np.uint8:
         input_scale, input_zero_point = input_details["quantization"]
         test_audio = test_audio / input_scale + input_zero_point
-    
+
     test_audio = np.expand_dims(test_audio, axis=0).astype(input_details["dtype"])
     print ("\n***** input_details[] in run_model() in data.io *****")
     print(input_details)
+    print ("\n***** test_audio.shape *****")
+    print (test_audio.shape)
+    print ("\n")
+
     interpreter.set_tensor(input_details["index"], test_audio)
     interpreter.invoke()
     output = interpreter.get_tensor(output_details["index"])[0]
