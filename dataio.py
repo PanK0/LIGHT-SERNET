@@ -124,32 +124,57 @@ def preprocess_dataset(files, labels_list, input_type="mfcc"):
 START Functions for inference
 """
 
+def get_input_id(audio, input_type="mfcc") :
+    if input_type == "spectrogram":
+        spectrogram = get_spectrogram(audio)
+        spectrogram = tf.expand_dims(spectrogram, -1)
+        return spectrogram
+    elif input_type == "mel_spectrogram":
+        spectrogram = get_spectrogram(audio)
+        mel_spectrogram = get_mel_spectrogram(spectrogram)
+        mel_spectrogram = tf.expand_dims(mel_spectrogram, -1)
+        return mel_spectrogram
+    elif input_type == "mfcc":
+        spectrogram = get_spectrogram(audio)
+        mel_spectrogram = get_mel_spectrogram(spectrogram)
+        mfcc = get_mfcc(mel_spectrogram)
+        mfcc = tf.expand_dims(mfcc, -1)
+        return mfcc
+    else:
+        raise ValueError('input_type not Valid!')
+
 # Get the preprocessed input as result
-def preprocess_input(dataset_name, filenames, splited_index, labels_list, input_type="mfcc", maker=False):
+def preprocess_input(filename, input_type="mfcc") :
+    output_file, _ = get_waveform_and_label(filename)
+    output_file = get_input_id(output_file)
+    return output_file 
+
+
+def run_model(tflite_file, test_audio) :
     
-    cache_directory = f"{hyperparameters.BASE_DIRECTORY}/Cache/{dataset_name}"
-    os.system(f"rm -rf {cache_directory}")
+    # Initialize the interpreter
+    interpreter = tf.lite.Interpreter(model_path=str(tflite_file))
+    interpreter.allocate_tensors()
 
-    test_cache_directory = os.path.join(cache_directory, "test")
-    os.makedirs(test_cache_directory, exist_ok=True)
+    input_details = interpreter.get_input_details()[0]
+    output_details = interpreter.get_output_details()[0]
 
-    test_index = splited_index[0]
-    print ("\n***** test_index (inside preprocess_input() in dataio.py) *****")
-    print (test_index)
+    predictions = np.zeros(1, dtype=int)
 
-    test_files = tf.gather(filenames, test_index)
-
-    test_dataset = preprocess_dataset(test_files, labels_list, input_type)
-    test_dataset = test_dataset.cache(test_cache_directory+ "/file")
-
-    test_dataset = test_dataset.batch(hyperparameters.BATCH_SIZE).prefetch(AUTOTUNE)
-
-    if maker: 
-        list(test_dataset.as_numpy_iterator()) 
-
-    return test_dataset
+    if input_details['dtype'] == np.uint8:
+        input_scale, input_zero_point = input_details["quantization"]
+        test_audio = test_audio / input_scale + input_zero_point
     
+    test_audio = np.expand_dims(test_audio, axis=0).astype(input_details["dtype"])
+    print ("\n***** input_details[] in run_model() in data.io *****")
+    print(input_details)
+    interpreter.set_tensor(input_details["index"], test_audio)
+    interpreter.invoke()
+    output = interpreter.get_tensor(output_details["index"])[0]
 
+    predictions = output.argmax()
+    
+    return predictions
 
 """
 END Functions for inference

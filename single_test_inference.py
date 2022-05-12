@@ -1,3 +1,9 @@
+# run with this:
+# python single_test_inference.py -fn "11a04Fd.wav" -id 3 -at "all" -ln "cross_entropy" -v 0 -it "mfcc"
+
+
+
+from fileinput import filename
 import os
 import datetime
 import time
@@ -28,10 +34,10 @@ np.random.seed(hyperparameters.SEED)
 
 # construct the argument parser and parse the arguments
 ap = argparse.ArgumentParser()
-ap.add_argument("-dn", "--dataset_name",
+ap.add_argument("-fn", "--file_name",
                 required=True,
                 type=str,
-                help="dataset name")
+                help="file name")
 
 ap.add_argument("-id", "--input_durations",
                 required=True,
@@ -58,71 +64,35 @@ ap.add_argument("-it", "--input_type",
                 type=str,
                 help="type of input(mfcc, spectrogram, mel_spectrogram)")
 
+
 args = vars(ap.parse_args())
 
 
-dataset_name = args["dataset_name"]  # Use EMO-DB_3.0s_Inference_Tests as dataset name
+file_name = args["file_name"]  # name of the file inside inference_tests/
 input_durations = args["input_durations"]
 audio_type = args["audio_type"]
 loss_name = args["loss_name"]
 verbose = args["verbose"]
 input_type = args["input_type"]
 
-'''
-NO NEED TO SEGMENT DATASET
-'''
-print ("Dataset is already segmented\n")
-
-threshold = 0
-
-Result = []
-Reports = []
-Predicted_targets = np.array([])
-Actual_targets = np.array([])
-
-print ("Preparing for dataset spliting")
-
-Filenames, Splited_Index, Labels_list = split_dataset(dataset_name, audio_type=audio_type)
-
-print ("\n***** FILENAMES *****")
-print (Filenames)
-
-print ("\n***** SPLITED INDEX *****")
-print (Splited_Index)
-
-print ("\n***** LABELS LIST *****")
-print (Labels_list)
+print ("\n***** OBTAINING FULL FILE PATH *****")
+filename = f"inference_tests/{file_name}"
+print (filename)
 
 print ("\n***** INPUT PREPROCESSING *****")
-
-'''
-preprocessed_input = preprocess_input(dataset_name, Filenames, Splited_Index, Labels_list, input_type="mfcc", maker=True)
+preprocessed_input = preprocess_input(filename, input_type="mfcc")
 print (preprocessed_input)
+
 '''
-index_selection_fold = 0
-_ , preprocessed_input = make_dataset_with_cache(dataset_name=dataset_name, filenames=Filenames, splited_index=Splited_Index, labels_list=Labels_list, index_selection_fold=index_selection_fold, input_type=input_type, maker=True)
-
-
-print ("\n***** CREATING BuffX and BuffY *****")
+print ("\n***** CREATING BUFFX *****")
 BuffX = []
-BuffY = []
-for buff in preprocessed_input:
-    BuffX.append(buff[0])
-    BuffY.append(buff[1])
+BuffX.append(preprocessed_input)
 BuffX = tf.concat(BuffX, axis=0).numpy()
-BuffY = tf.concat(BuffY, axis=0).numpy()
-
-print ("\n***** BuffX *****")
 print (BuffX)
-print ("\n***** BuffX[0] *****")
-print (BuffX[0])
-print ("\n***** BuffY *****")
-print (BuffY)
-
+'''
 
 print ("\n***** LOAD AND RUN THE MODEL *****")
 model_path = f"inference_tests/EMO-DB_3.0s_Segmented_cross_entropy_float32.tflite"
-predictions = run_tflite_model(model_path, BuffX)
-print(predictions)
+predictions = run_model(model_path, preprocessed_input)
+print (predictions)
 
-print ("\n DONE")
