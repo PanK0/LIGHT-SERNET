@@ -125,7 +125,7 @@ def preprocess_dataset(files, labels_list, input_type="mfcc"):
 
 """
 START Functions for inference
-"""
+
 
 def segment_file(filename, segment_length=3, segment_mode=1):
     raw_data, fs = read_wave(filename)
@@ -183,11 +183,6 @@ def run_model(tflite_file, test_audio) :
         test_audio = test_audio / input_scale + input_zero_point
 
     test_audio = np.expand_dims(test_audio, axis=0).astype(input_details["dtype"])
-    print ("\n***** input_details[] in run_model() in data.io *****")
-    print(input_details)
-    print ("\n***** test_audio.shape *****")
-    print (test_audio.shape)
-    print ("\n")
 
     interpreter.set_tensor(input_details["index"], test_audio)
     interpreter.invoke()
@@ -197,7 +192,7 @@ def run_model(tflite_file, test_audio) :
     
     return predictions
 
-"""
+
 END Functions for inference
 """
 

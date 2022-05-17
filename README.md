@@ -7,6 +7,9 @@ This is the Tensorflow 2.x implementation of our paper ["Light-SERNet: A lightwe
 </div>
 In this paper, we propose an efficient and lightweight fully convolutional neural network(FCNN) for speech emotion recognition in systems with limited hardware resources. In the proposed FCNN model, various feature maps are extracted via three parallel paths with different filter sizes. This helps deep convolution blocks to extract high-level features, while ensuring sufficient separability. The extracted features are used to classify the emotion of the input speech segment. While our model has a smaller size than that of the state-of-the-art models, it achieves a higher performance on the IEMOCAP and EMO-DB datasets.
 
+* * *
+
+# Training and Testing
 
 ## Demo
 Demo on EMO-DB dataset: 
@@ -87,3 +90,22 @@ If you find our code useful for your research, please consider citing:
   year={2021}
 }
 ```
+
+* * *
+
+# Single File Inference
+
+In the folder *[inference_tests](https://github.com/PanK0/LIGHT-SERNET/tree/master/inference_tests)*  are present:
+- **trained model** (named: *EMO-DB_3.0s_Segmented_cross_entropy_float32*) with the relative confusion matrix and report for the performances. The model is trained using the EMO-DB dataset;
+- some **audio samples** named with the corresponding label.
+
+## Run Inference Experiments
+
+The main functions used for the experiments, took from the original source and modified a little for my scopes, are contained into the file *[inference_data_processing.py](https://github.com/PanK0/LIGHT-SERNET/blob/master/inference_data_processing.py)*
+
+- Install the requirements
+
+- Run the file *[inference_single_file.py](https://github.com/PanK0/LIGHT-SERNET/blob/master/inference_single_file.py)* with
+`$ python inference_single_file.py -fn "happiness.wav" -id 3 -at "all" -ln "cross_entropy" -it "mfcc"`
+where "happiness.wav" is the name of the file you want to classify;
+- **CAREFUL** : the file must be a **.wav** file sampled at **16 kHz**, otherwise the program will not work.
