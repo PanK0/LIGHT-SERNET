@@ -107,5 +107,5 @@ The main functions used for the experiments, took from the original source and m
 
 - Run the file *[inference_single_file.py](https://github.com/PanK0/LIGHT-SERNET/blob/master/inference_single_file.py)* with
 `$ python inference_single_file.py -fn "happiness.wav" -id 3 -at "all" -ln "cross_entropy" -it "mfcc"`
-where "happiness.wav" is the name of the file you want to classify;
+where "happiness.wav" is the name of the file you want to classify, stored in the folder *[inference_tests](https://github.com/PanK0/LIGHT-SERNET/tree/master/inference_tests)*;
 - **CAREFUL** : the file must be a **.wav** file sampled at **16 kHz**, otherwise the program will not work.
