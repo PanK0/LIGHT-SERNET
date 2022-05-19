@@ -99,7 +99,30 @@ In the folder *[inference_tests](https://github.com/PanK0/LIGHT-SERNET/tree/mast
 - **trained model** (named: *EMO-DB_3.0s_Segmented_cross_entropy_float32*) with the relative confusion matrix and report for the performances. The model is trained using the EMO-DB dataset;
 - some **audio samples** named with the corresponding label.
 
+
+## Content of LIGHT-SERNET/inference_tests folder
+
+Except for the four files named
+
+
+*   `EMO-DB_3.0s_Segmented_cross_entropy_float32.tflite`
+*   `EMO-DB_3.0s_Segmented_cross_entropy_Report.txt`
+*   `EMO-DB_3.0s_Segmented_cross_entropy_TotalConfusionMatrixNormalized.pdf`
+*   `EMO-DB_3.0s_Segmented_cross_entropy_TotalConfusionMatrix.pdf`
+
+the other files in the folder contain in the name some information like
+
+
+*   The **label** of the audio file
+*   Whether the file **belongs to the EMO-DB Dataset** (simply named with `dataset`)
+*   Whether the file is a **phrase from the dataset** but it has been recorded by me from a german speaker (simply named with `rec`)
+*   Whether the file is **NOT a phrase from the dataset** and it has been recorded by me from a german speaker (simply named with `external`)
+
+**! ! ! PLEASE CAREFUL :** audio tagged with `rec` and `external` are recorded by me with non-professional instruments with two german speakers that are **NOT ACTRESSES**, so the classification of the content may encounter some impediments.
+
 ## Run Inference Experiments
+
+Colab Notebook: [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/1ESVAMto8Fu65l2uSakStkt6OgQfbc6VH?usp=sharing)
 
 The main functions used for the experiments, took from the original source and modified a little for my scopes, are contained into the file *[inference_data_processing.py](https://github.com/PanK0/LIGHT-SERNET/blob/master/inference_data_processing.py)*
 
@@ -107,7 +130,16 @@ The main functions used for the experiments, took from the original source and m
 
 - Run the file *[inference_single_file.py](https://github.com/PanK0/LIGHT-SERNET/blob/master/inference_single_file.py)* with
 
-`$ python inference_single_file.py -fn "happiness.wav" -id 3 -at "all" -ln "cross_entropy" -it "mfcc"`
+`$ python inference_single_file.py -id 3 -at "all" -ln "cross_entropy" -it "mfcc" -fn "happiness_dataset.wav"`
 
-where "happiness.wav" is the name of the file you want to classify, stored in the folder *[inference_tests](https://github.com/PanK0/LIGHT-SERNET/tree/master/inference_tests)*;
+where "happiness_dataset.wav" is the name of the file you want to classify, stored in the folder *[inference_tests](https://github.com/PanK0/LIGHT-SERNET/tree/master/inference_tests)*;
 - **CAREFUL** : the file must be a **.wav** file sampled at **16 kHz**, otherwise the program will not work. 
+
+
+## The used model
+
+The used model is also present in the folder *[inference_tests](https://github.com/PanK0/LIGHT-SERNET/tree/master/inference_tests)* with the name `EMO-DB_3.0s_Segmented_cross_entropy_float32.tflite`. 
+
+To change the model train again the Neural Network and then modify the model path in the variable `model_path` in the code in `inference_single_file.py`.
+
+**! ! ! PLEASE CAREFUL:** if you train a new model, the classes will be mixed, and so you'll have to reassign the correct correspondend classes in the dictionary.
