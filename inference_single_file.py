@@ -1,5 +1,5 @@
 # run with this:
-# python inference_single_file.py -fn "happiness.wav" -id 3 -at "all" -ln "cross_entropy" -it "mfcc"
+# python inference_single_file.py -id 3 -at "all" -ln "cross_entropy" -it "mfcc" -fn "happiness_dataset.wav"
 
 
 
